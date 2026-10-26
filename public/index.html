@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Chilla — Find the person who knows.</title>
+<meta name="description" content="Chilla is the PM's sidekick inside Slack and Teams: find the right person, automate follow-up nudges, and get cross-functional meeting notes as context. Join the pilot for $15/month." />
+<meta property="og:title" content="Chilla — Find the person who knows." />
+<meta property="og:description" content="The PM's sidekick in Slack & Teams. People search, automated nudges, meeting context. Join the pilot: $15/month." />
+<meta property="og:type" content="website" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Caveat:wght@500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+
+<!-- reusable mascot -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="chilla" viewBox="0 0 200 190">
+      <ellipse cx="62" cy="42" rx="24" ry="32" fill="var(--fur)"/>
+      <ellipse cx="62" cy="44" rx="14" ry="21" fill="var(--ear)"/>
+      <ellipse cx="138" cy="42" rx="24" ry="32" fill="var(--fur)"/>
+      <ellipse cx="138" cy="44" rx="14" ry="21" fill="var(--ear)"/>
+      <path d="M42 112 a58 58 0 0 1 116 0 Z" fill="var(--fur)"/>
+      <ellipse cx="56" cy="128" rx="34" ry="26" fill="var(--fur)"/>
+      <ellipse cx="144" cy="128" rx="34" ry="26" fill="var(--fur)"/>
+      <ellipse cx="54" cy="128" rx="20" ry="13" fill="var(--ear)"/>
+      <ellipse cx="146" cy="128" rx="20" ry="13" fill="var(--ear)"/>
+      <path d="M58 150 L36 184 L86 162 Z" fill="var(--fur)"/>
+      <ellipse cx="100" cy="146" rx="42" ry="24" fill="var(--belly)"/>
+      <circle cx="82" cy="96" r="10" fill="var(--ink)"/>
+      <circle cx="118" cy="96" r="10" fill="var(--ink)"/>
+      <circle cx="85" cy="92" r="3.4" fill="#fff"/>
+      <circle cx="121" cy="92" r="3.4" fill="#fff"/>
+      <ellipse cx="100" cy="116" rx="6" ry="4.2" fill="var(--nose)"/>
+      <g stroke="var(--ink)" stroke-opacity=".55" stroke-width="2" stroke-linecap="round">
+        <line x1="8" y1="112" x2="84" y2="124"/><line x1="6" y1="128" x2="84" y2="128"/><line x1="10" y1="146" x2="84" y2="132"/>
+        <line x1="192" y1="112" x2="116" y2="124"/><line x1="194" y1="128" x2="116" y2="128"/><line x1="190" y1="146" x2="116" y2="132"/>
+      </g>
+    </symbol>
+  </defs>
+</svg>
+
+<nav class="nav">
+  <a href="#" class="brand" aria-label="Chilla home">
+    <svg class="brand-mark"><use href="#chilla"/></svg>
+    <span>chilla</span>
+  </a>
+  <div class="nav-links">
+    <a href="#features">Features</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#join" class="btn btn-sm">Join the pilot →</a>
+  </div>
+</nav>
+
+<main>
+
+<!-- HERO -->
+<section class="hero wrap">
+  <div class="hero-copy">
+    <span class="pill">✦ Pilot cohort · now open to PMs</span>
+    <h1>Find the person<br/>who <span class="hl">knows.</span></h1>
+    <p class="lede">Chilla lives in your Slack and Teams. It tells you who to ask, nudges people so work keeps moving, and sits in cross-functional meetings so you don't have to.</p>
+
+    <form class="quick-form" data-form="hero">
+      <label class="sr-only" for="hero-email">Work email</label>
+      <input id="hero-email" type="email" name="email" placeholder="you@company.com" required autocomplete="email" />
+      <input type="hidden" name="plan" value="standard" />
+      <button class="btn" type="submit">Join the pilot: $15/mo</button>
+    </form>
+    <p class="fine">Nothing is charged today. Before the pilot starts we'll email you to confirm.</p>
+
+    <div class="scribble">
+      <svg viewBox="0 0 80 50" class="arrow" aria-hidden="true"><path d="M74 6 C 50 4, 20 14, 12 40" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><path d="M4 30 L12 42 L22 32" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>built by PMs who were tired of<br/>asking "who owns this??" 🙃</span>
+    </div>
+  </div>
+
+  <div class="hero-art">
+    <div class="chat card">
+      <div class="chat-head"><span class="dot"></span>#launch-q4 <span class="muted">· Slack</span></div>
+      <div class="msg">
+        <div class="avatar a1">JL</div>
+        <div><b>Jess (PM)</b><p>@chilla who actually owns the billing retry logic? need a yes/no before Thursday</p></div>
+      </div>
+      <div class="msg">
+        <svg class="avatar bot"><use href="#chilla"/></svg>
+        <div><b>Chilla <span class="tag">APP</span></b>
+          <p>That's <b>Priya Raman</b> (Payments Eng). She shipped the last 3 PRs to <code>retry-worker</code> and led the Sept postmortem.</p>
+          <div class="chips"><span>💬 DM Priya</span><span>📅 Find 15 min</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="sticky s-yellow">
+      <span class="tape"></span>
+      Found her in <b>4 sec.</b><br/>Last time it took 2 days &amp; 6 DMs 😮‍💨
+    </div>
+    <svg class="hero-mascot" aria-hidden="true"><use href="#chilla"/></svg>
+  </div>
+</section>
+
+<!-- PAIN -->
+<section class="pain wrap">
+  <h2 class="section-title">The PM job, minus the <span class="strike">chasing</span></h2>
+  <div class="pain-grid">
+    <div class="pain-card">
+      <span class="num">01</span>
+      <p>"Who's the right person for this?" Ask in 3 channels, get 4 different names.</p>
+    </div>
+    <div class="pain-card tilt-r">
+      <span class="num">02</span>
+      <p>The meeting had great action items. Two weeks later, nobody has done them.</p>
+    </div>
+    <div class="pain-card tilt-l">
+      <span class="num">03</span>
+      <p>Design, eng, legal and GTM each meet separately. You're expected to know what all of them decided.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features" class="features wrap">
+  <div class="section-head">
+    <span class="pill pill-blue">What Chilla does</span>
+    <h2 class="section-title">Three jobs you can stop doing by hand</h2>
+  </div>
+
+  <article class="feature">
+    <div class="feature-copy">
+      <span class="feature-num">1</span>
+      <h3>Know who to contact</h3>
+      <p>Search your company by what people actually work on, not by what their title says. Chilla reads ownership signals from Slack/Teams threads, docs and repos and gives you <b>a name, the reason, and how to reach them.</b></p>
+      <ul class="checks">
+        <li>"Who knows the SSO migration?"</li>
+        <li>Ranked by recent, relevant work</li>
+        <li>Respects channel permissions</li>
+      </ul>
+      <span class="tier-tag free">Free tier</span>
+    </div>
+    <div class="feature-art card">
+      <div class="search"><span>🔍</span> who decided the EU pricing change?</div>
+      <div class="person">
+        <div class="avatar a2">MO</div>
+        <div><b>Marcus Oyelaran</b> · <span class="muted">Pricing Ops</span><br/><small>Wrote the decision doc · 6 threads this month</small></div>
+        <span class="score">96%</span>
+      </div>
+      <div class="person dim">
+        <div class="avatar a3">AK</div>
+        <div><b>Aiko Kim</b> · <span class="muted">Finance</span><br/><small>Approved the margin model</small></div>
+        <span class="score">81%</span>
+      </div>
+    </div>
+  </article>
+
+  <article class="feature reverse">
+    <div class="feature-copy">
+      <span class="feature-num">2</span>
+      <h3>Automate the nudges</h3>
+      <p>Chilla follows up after meetings, checks in on owners as deadlines get close, and <b>compares progress with your delivery timeline</b>. When something slips, you hear about it on day 1, not in week 3.</p>
+      <ul class="checks">
+        <li>Post-meeting follow-ups, auto-drafted</li>
+        <li>Friendly reminders sent as you, or as Chilla</li>
+        <li>Slip alerts against your launch dates</li>
+      </ul>
+      <span class="tier-tag std">Standard · $15/mo</span>
+    </div>
+    <div class="feature-art card">
+      <div class="timeline">
+        <div class="tl-row done"><span>✓</span> API contract signed off <small>Mon</small></div>
+        <div class="tl-row done"><span>✓</span> Design QA <small>Tue</small></div>
+        <div class="tl-row warn"><span>!</span> Load test <small>due Thu · no update in 3d</small></div>
+        <div class="tl-row"><span>○</span> GA announcement <small>Nov 12</small></div>
+      </div>
+      <div class="nudge">
+        <svg class="avatar bot sm"><use href="#chilla"/></svg>
+        <p>Hey Dev 👋 quick check: is the load test still on track for Thu? Launch is pinned to it. Reply 👍 or tell me what's blocking.</p>
+      </div>
+    </div>
+  </article>
+
+  <article class="feature">
+    <div class="feature-copy">
+      <span class="feature-num">3</span>
+      <h3>Attend meetings &amp; gather context</h3>
+      <p>Send Chilla to the cross-functional syncs you can't attend. You get back <b>decisions, open questions and changes that affect you</b>, and they go into a running context doc for each project.</p>
+      <ul class="checks">
+        <li>Joins Teams / Slack huddles</li>
+        <li>Pulls out decisions, risks and owners</li>
+        <li>Builds project context over time</li>
+      </ul>
+      <span class="tier-tag pro">Premium · $29/mo</span>
+    </div>
+    <div class="feature-art card notes">
+      <div class="notes-head">📝 Legal × Eng sync · 30 min <span class="muted">· summarized for you</span></div>
+      <p><b>Decided</b><br/>Data retention stays at 90 days for v1.</p>
+      <p><b>Affects you</b><br/>Export feature needs a consent banner, so add ~2 days.</p>
+      <p><b>Open</b><br/>Who signs off on the DPA wording? <span class="hand">→ Chilla is finding out</span></p>
+    </div>
+  </article>
+</section>
+
+<!-- INTEGRATIONS -->
+<section class="integrations wrap">
+  <div class="int-card card">
+    <div>
+      <h2>No new app to move into.</h2>
+      <p>Chilla works inside the tools your team already uses. Add it to Slack or Teams and @mention it.</p>
+    </div>
+    <div class="int-logos">
+      <span class="int-chip"><i class="sq slack"></i>Slack</span>
+      <span class="plus">+</span>
+      <span class="int-chip"><i class="sq teams"></i>Microsoft Teams</span>
+    </div>
+    <span class="hand int-note">more integrations later. tell us which!</span>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing" class="pricing wrap">
+  <div class="section-head">
+    <span class="pill">Pilot pricing</span>
+    <h2 class="section-title">Pay for what you actually use</h2>
+    <p class="sub">Pilot members keep this price after launch.</p>
+  </div>
+
+  <div class="tiers">
+    <div class="tier card">
+      <h3>Free</h3>
+      <div class="price">$0<small>/forever</small></div>
+      <p class="tier-desc">Know who to ask.</p>
+      <ul class="checks">
+        <li>Smart people search</li>
+        <li>Slack or Teams</li>
+        <li>25 searches / month</li>
+      </ul>
+      <button class="btn btn-ghost" data-plan="free">Get early access</button>
+    </div>
+
+    <div class="tier card featured">
+      <span class="badge">Most popular</span>
+      <h3>Standard</h3>
+      <div class="price">$15<small>/month</small></div>
+      <p class="tier-desc">Keep work moving without chasing.</p>
+      <ul class="checks">
+        <li>Everything in Free, unlimited</li>
+        <li>Automated nudges &amp; follow-ups</li>
+        <li>Timeline cross-checks &amp; slip alerts</li>
+      </ul>
+      <button class="btn" data-plan="standard">Join the pilot: $15/mo</button>
+    </div>
+
+    <div class="tier card">
+      <h3>Premium</h3>
+      <div class="price">$29<small>/month</small></div>
+      <p class="tier-desc">Your eyes and ears across the company.</p>
+      <ul class="checks">
+        <li>Everything in Standard</li>
+        <li>Chilla attends meetings for you</li>
+        <li>Per-project context docs</li>
+      </ul>
+      <button class="btn btn-ghost" data-plan="premium">Join the pilot: $29/mo</button>
+    </div>
+  </div>
+</section>
+
+<!-- JOIN -->
+<section id="join" class="join wrap">
+  <div class="join-card card">
+    <div class="join-left">
+      <svg class="join-mascot" aria-hidden="true"><use href="#chilla"/></svg>
+      <h2>Join the pilot</h2>
+      <p>The cohort is small and we set it up with you personally. Tell us a bit about your team and we'll get in touch this week.</p>
+      <div class="sticky s-pink small">
+        <span class="tape"></span>
+        No card today. We email you before we charge anything.
+      </div>
+    </div>
+
+    <form class="join-form" data-form="main" novalidate>
+      <label>Work email*
+        <input type="email" name="email" placeholder="you@company.com" required autocomplete="email" />
+      </label>
+      <div class="row">
+        <label>Role
+          <select name="role">
+            <option value="">Pick one</option>
+            <option>Product Manager</option>
+            <option>Senior / Group PM</option>
+            <option>Head of Product / VP</option>
+            <option>Program / Project Manager</option>
+            <option>Other</option>
+          </select>
+        </label>
+        <label>Company size
+          <select name="companySize">
+            <option value="">Pick one</option>
+            <option>1–50</option>
+            <option>51–200</option>
+            <option>201–1,000</option>
+            <option>1,000+</option>
+          </select>
+        </label>
+      </div>
+      <fieldset>
+        <legend>Your team uses</legend>
+        <div class="seg">
+          <label><input type="radio" name="platform" value="slack" checked /><span>Slack</span></label>
+          <label><input type="radio" name="platform" value="teams" /><span>Teams</span></label>
+          <label><input type="radio" name="platform" value="both" /><span>Both</span></label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Plan</legend>
+        <div class="seg plans">
+          <label><input type="radio" name="plan" value="free" /><span>Free<br/><small>$0</small></span></label>
+          <label><input type="radio" name="plan" value="standard" checked /><span>Standard<br/><small>$15/mo</small></span></label>
+          <label><input type="radio" name="plan" value="premium" /><span>Premium<br/><small>$29/mo</small></span></label>
+        </div>
+      </fieldset>
+      <label>What's the most annoying part of your week? <span class="muted">(optional)</span>
+        <textarea name="pain" rows="2" placeholder="e.g. chasing eng for status before every exec review"></textarea>
+      </label>
+      <input type="text" name="company_website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+      <button class="btn btn-lg" type="submit">Count me in →</button>
+      <p class="form-msg" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq wrap">
+  <h2 class="section-title">Questions</h2>
+  <details><summary>Am I paying today?</summary><p>No. Signing up saves your spot. Before the pilot starts we'll email you to confirm the plan, and you can pass.</p></details>
+  <details><summary>What does Chilla have access to?</summary><p>Only the channels and meetings you add it to. It follows your workspace permissions, and you can remove it at any time.</p></details>
+  <details><summary>Does my whole company need to install it?</summary><p>No. One PM can add it to their workspace. Teammates just see a friendly bot when it nudges them.</p></details>
+  <details><summary>Why chinchilla?</summary><p>Chinchillas are soft and quick and they hear everything (look at the ears). Seemed right.</p></details>
+</section>
+
+</main>
+
+<footer class="footer wrap">
+  <div class="brand"><svg class="brand-mark"><use href="#chilla"/></svg><span>chilla</span></div>
+  <p class="muted">Find the person who knows. · © 2026 Chilla</p>
+</footer>
+
+<div class="toast" role="status" aria-live="polite" hidden></div>
+
+<script src="/script.js"></script>
+<script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>
