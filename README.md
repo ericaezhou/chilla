@@ -33,7 +33,7 @@ This previews the page only. The sign-up API runs on Vercel.
 
 1. Import this GitHub repo at <https://vercel.com/new>. Framework preset: **Other**. Leave the build settings empty. Deploy.
 2. Vercel project → **Storage** → **Supabase** (free plan) → create and connect it to the project.
-   This sets `SUPABASE_URL` and the secret key env vars automatically.
+   This sets `NEXT_PUBLIC_SUPABASE_URL` and the secret key env vars automatically. Leave "Custom Prefix" empty.
 3. Open the new project in the Supabase dashboard → **SQL Editor** → paste [`supabase/schema.sql`](supabase/schema.sql) → **Run**.
 4. Vercel → **Deployments** → latest → **⋯ → Redeploy** so the env vars take effect.
 5. Optional: Vercel project → **Analytics** → Enable, to get visitor counts for conversion rate.
@@ -42,7 +42,7 @@ This previews the page only. The sign-up API runs on Vercel.
 
 | Name | Purpose |
 | --- | --- |
-| `SUPABASE_URL` | Your project URL, e.g. `https://abcd.supabase.co` |
+| `SUPABASE_URL` *or* `NEXT_PUBLIC_SUPABASE_URL` | Your project URL, e.g. `https://abcd.supabase.co` |
 | `SUPABASE_SECRET_KEY` *or* `SUPABASE_SERVICE_ROLE_KEY` | Server-only key that can write to the table |
 
 The Vercel Supabase integration sets these for you. If you created the Supabase project yourself, copy them from Supabase → **Project Settings → API Keys** into Vercel → **Settings → Environment Variables**.
