@@ -9,6 +9,8 @@
 
 # Vercel CLI link (project/org IDs) and local build output
 .vercel/
+# The demo is built into public/demo on every deploy (npm run build)
+public/demo/
 
 # Supabase CLI local state, if anyone runs `supabase link` / `supabase start`
 supabase/.temp/

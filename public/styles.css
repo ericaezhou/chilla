@@ -123,6 +123,8 @@ h1 {
 }
 input:focus, select:focus, textarea:focus { outline: 3px solid var(--blue); outline-offset: 1px; }
 .fine { font-size: .85rem; color: var(--muted); margin: 10px 0 0; }
+.demo-link { display: inline-block; margin-top: 14px; font-weight: 700; color: var(--blue); text-decoration: underline; text-underline-offset: 4px; }
+.demo-link:hover { color: var(--ink); }
 
 .scribble { display: flex; align-items: flex-start; gap: 6px; margin-top: 26px; color: var(--blue); }
 .scribble .arrow { width: 60px; flex-shrink: 0; transform: scaleY(-1) rotate(10deg); }

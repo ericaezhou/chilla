@@ -7,6 +7,7 @@ This is a one-week pricing experiment: we post the page in PM communities (Reddi
 ## Project layout
 
 ```
+demo/                interactive demo (Next.js), served at /demo. See demo/README.md
 public/              static site served by Vercel
   index.html         the page (mascot SVG is defined once at the top as <symbol id="chilla">)
   styles.css         styles; brand palette is the CSS variables at the top
@@ -18,20 +19,20 @@ supabase/schema.sql  creates the signups table (run once)
 vercel.json          serves public/ as the site
 ```
 
-No build step and no npm dependencies.
+The landing page itself has no build step. Vercel's build (`npm run build`) only builds the demo and copies it to `public/demo/`.
 
 ## Run locally
 
 ```bash
-python3 -m http.server 4173 --directory public
-# open http://localhost:4173
+npm run build                 # builds the demo into public/demo (first run installs its packages)
+npx serve public -l 4173      # open http://localhost:4173 and http://localhost:4173/demo
 ```
 
-This previews the page only. The sign-up API runs on Vercel.
+This previews the pages only. The sign-up API runs on Vercel. To work on the demo with live reload, run `npm install && npm run dev` inside `demo/`.
 
 ## Deploy (Vercel + Supabase)
 
-1. Import this GitHub repo at <https://vercel.com/new>. Framework preset: **Other**. Leave the build settings empty. Deploy.
+1. Import this GitHub repo at <https://vercel.com/new>. Framework preset: **Other**. Leave the build settings empty (`vercel.json` sets them). Deploy.
 2. Vercel project → **Storage** → **Supabase** (free plan) → create and connect it to the project.
    This sets `NEXT_PUBLIC_SUPABASE_URL` and the secret key env vars automatically. Leave "Custom Prefix" empty.
 3. Open the new project in the Supabase dashboard → **SQL Editor** → paste [`supabase/schema.sql`](supabase/schema.sql) → **Run**.

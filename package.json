@@ -2,7 +2,10 @@
   "name": "chilla-landing",
   "private": true,
   "type": "module",
+  "scripts": {
+    "build": "cd demo && npm ci && npm run build && rm -rf ../public/demo && cp -R out ../public/demo"
+  },
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   }
 }
