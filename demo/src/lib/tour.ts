@@ -4,7 +4,7 @@ import type { IncomingNudge, Integrations, MeetingRequest, Nudge } from "@/lib/t
 // actually did it, so the tour never needs a "Next" button and can't drift.
 // `target` matches a data-tour="…" attribute that TourGuide highlights.
 
-export type TourEvent = "directory-profile" | "search";
+export type TourEvent = "directory-profile" | "search" | "intro";
 
 export interface TourSnapshot {
   integrations: Integrations;

@@ -141,12 +141,31 @@ export interface Settings {
 
 // ---------- chat ----------
 
+/** How well one person covers one part of the question. */
+export interface Evidence {
+  label: string;
+  /** direct: the topic itself is on their profile. related: only a synonym is. */
+  kind: "direct" | "related" | "missing";
+  /** Where the evidence came from (a project, skill or expertise). */
+  source?: string;
+  /** For related evidence, the word that matched instead. */
+  via?: string;
+}
+
 export interface Recommendation {
   employeeId: string;
-  relevance: number; // 0–100
+  /** 0–100. Omitted when Chilla is showing someone you asked about by name. */
+  relevance?: number;
   reasons: string[];
-  matchedTerms: string[];
+  evidence: Evidence[];
+  /** Plain-English caveats, e.g. "No direct conversion experience listed". */
+  gaps: string[];
 }
+
+/** A one-click follow-up button under a Chilla message. */
+export type ChatAction =
+  | { type: "search"; label: string; query: string }
+  | { type: "meet"; label: string; employeeId: string };
 
 export interface SearchFilters {
   department?: Department;
@@ -169,6 +188,7 @@ export type ChatMessage =
       text: string;
       /** Sent by Chilla on your behalf (nudges). */
       via?: "chilla";
+      actions?: ChatAction[];
     })
   | (BaseMessage & {
       kind: "recommendations";
@@ -177,6 +197,12 @@ export type ChatMessage =
       topic: string;
       results: Recommendation[];
       filters?: SearchFilters;
+      /** Replaces the default "Here are the N people…" line. */
+      intro?: string;
+      /** Extra context shown under the intro (comparisons, follow-ups, gaps). */
+      notes?: string[];
+      /** Hide the refine bar (follow-ups and comparisons aren't re-runnable searches). */
+      noRefine?: boolean;
     })
   | (BaseMessage & { kind: "meeting"; author: "chilla"; meetingId: string })
   | (BaseMessage & { kind: "nudge"; author: "chilla"; nudgeId: string })

@@ -27,11 +27,14 @@ export function MeetingNotice({ meetingId }: { meetingId: string }) {
         · {formatMeetingWhen(m.date, m.time)} · {m.duration} min · {m.format === "video" ? "Video call" : "In person"}
       </p>
       <p className="mt-1 text-sm text-muted">“{m.purpose}”</p>
-      {m.onCalendar && (
-        <p className="mt-1 text-xs font-semibold">
-          📅 {accepted ? "On both calendars" : "Held on your calendar"} · picked from times you&apos;re both free
-        </p>
-      )}
+      <p className="mt-1 text-xs font-semibold">
+        📅{" "}
+        {m.onCalendar
+          ? `${accepted ? "Blocked on both calendars" : "Blocked on your calendar"} · picked from times you're both free`
+          : accepted
+            ? `Blocked on ${e.name.split(" ")[0]}'s calendar`
+            : `Held on ${e.name.split(" ")[0]}'s calendar until they reply`}
+      </p>
       {!accepted && <p className="mt-1 text-xs text-muted">I&apos;ll let you know when {e.name.split(" ")[0]} responds.</p>}
     </div>
   );

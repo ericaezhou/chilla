@@ -5,6 +5,7 @@ import { BellRing, CalendarPlus, Clock, Mail, MapPin, MessageCircle, X } from "l
 import { getEmployee } from "@/data/employees";
 import { Avatar, statusLabel } from "@/components/ui/Avatar";
 import { useWorkspace } from "@/components/workspace/WorkspaceProvider";
+import { ConnectionRow } from "./ConnectionRow";
 import { ProjectList } from "./ProjectList";
 
 // Slack-style profile side panel with a person's full Chilla profile.
@@ -71,6 +72,10 @@ export function ProfilePanel() {
             <p className="mt-3 rounded-lg bg-blue-soft px-3 py-2 text-sm">
               <b>Ask {first} about:</b> {e.bestFor}
             </p>
+          </Section>
+
+          <Section title="How you're connected">
+            <ConnectionRow employeeId={e.id} />
           </Section>
 
           <Section title="Expertise">

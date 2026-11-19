@@ -43,6 +43,9 @@ export default function MeetingsPage() {
                   <div className="flex-1 text-sm">
                     <p className="font-semibold">{formatMeetingWhen(m.date, m.time)} · {m.duration} min</p>
                     <p className="text-muted">{m.purpose}</p>
+                    <p className="mt-0.5 text-xs font-semibold">
+                      📅 {m.onCalendar ? (accepted ? "Blocked on both calendars" : "Blocked on your calendar") : accepted ? `Blocked on ${e.name.split(" ")[0]}'s calendar` : "Held until they reply"}
+                    </p>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="chip bg-white">

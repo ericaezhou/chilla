@@ -77,25 +77,27 @@ export function relativeDay(date: string, from = new Date()) {
   return formatDay(date);
 }
 
-const MY_EVENTS = [
-  "Spend controls standup",
-  "1:1 with Maya",
-  "Sprint planning",
-  "Customer call: Acme Corp",
-  "Design review",
-  "Focus time",
-  "Roadmap sync",
-];
+const toMinutes = (t: string) => Number(t.split(":")[0]) * 60 + Number(t.split(":")[1]);
+const fromMinutes = (m: number) => `${String(Math.floor(m / 60)).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`;
 
-/** Your own (fake) synced calendar: busy half-hour slots and what's in them. */
+/** Every half-hour slot a meeting covers: 10:00 for 60 min → 10:00, 10:30. */
+export function coveredSlots(time: string, duration: number) {
+  const out: string[] = [];
+  for (let m = toMinutes(time); m < toMinutes(time) + duration; m += 30) out.push(fromMinutes(m));
+  return out;
+}
+
+/**
+ * Your own (fake) synced calendar: which half-hour slots are busy.
+ * Chilla only has free/busy access, so it never knows what the events are.
+ */
 export function myCalendar(date: string, start = "09:00", end = "17:00") {
   const busy = new Map<string, string>();
   let seed = 7;
   for (const c of "me" + date) seed = (seed * 31 + c.charCodeAt(0)) >>> 0;
   for (const s of slotsFor("me", date, start, end)) {
     seed = (seed * 1103515245 + 12345) >>> 0;
-    if (s.time === "09:30") busy.set(s.time, MY_EVENTS[0]);
-    else if (seed % 100 < 22) busy.set(s.time, MY_EVENTS[1 + (seed % (MY_EVENTS.length - 1))]);
+    if (s.time === "09:30" || seed % 100 < 22) busy.set(s.time, "Busy");
   }
   return busy;
 }

@@ -39,8 +39,10 @@ import { toISODate, weekdayFromToday } from "@/lib/dates";
 import { REPLY_STATUS, firstName, replyFor } from "@/lib/nudges";
 import { readStored, updateStored, usePersistentState } from "@/lib/storage";
 import type { TourEvent } from "@/lib/tour";
+import { connectionTo } from "@/lib/network";
 import type {
   CalendarProvider,
+  ChatAction,
   ChatMessage,
   IncomingNudge,
   Integrations,
@@ -110,6 +112,10 @@ interface WorkspaceCtx {
   typing: Record<string, boolean>;
   sendMessage: (convId: string, text: string) => void;
   refineSearch: (convId: string, query: string, filters: SearchFilters, ephemeral?: boolean) => void;
+  /** A button under a Chilla message ("Find a time with Priya"). */
+  runAction: (convId: string, action: ChatAction, ephemeral?: boolean) => void;
+  /** Ask a mutual contact to introduce you. `bridgeId` is the middle person for 3rd-degree intros. */
+  requestIntro: (viaId: string, targetId: string, topic?: string, bridgeId?: string) => void;
   reactions: Record<string, string[]>;
   toggleReaction: (msgId: string, emoji: string) => void;
 
@@ -144,6 +150,8 @@ export function useWorkspace() {
   if (!ctx) throw new Error("useWorkspace must be used inside <WorkspaceProvider>");
   return ctx;
 }
+
+const historyOf = (convId: string) => readStored(chatKey(convId), chatFallback(convId));
 
 const append = (convId: string, ...msgs: ChatMessage[]) =>
   updateStored(chatKey(convId), chatFallback(convId), (prev) => [...prev, ...msgs]);
@@ -345,7 +353,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
             append(convId, chillaText("Tell me who you're looking for, e.g. `/chilla find SSO migration`.", { ephemeral: true }));
             return;
           }
-          postChillaReplies(convId, respond(cmd.query, { settings, ephemeral }));
+          postChillaReplies(convId, respond(cmd.query, { settings, ephemeral, history: historyOf(convId) }));
           return;
         case "nudge":
           setNudgeTarget({ employeeId: cmd.employeeId, ask: cmd.ask });
@@ -394,7 +402,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       if (!installed) return;
       if (convId !== CHILLA_DM && !mentionsChilla(trimmed)) return;
       // Simulate Chilla "thinking" across the org graph before answering.
-      postChillaReplies(convId, respond(trimmed, { settings }));
+      postChillaReplies(convId, respond(trimmed, { settings, history: historyOf(convId) }));
     },
     [settings, runSlash, typeThen, postChillaReplies],
   );
@@ -402,6 +410,59 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   const refineSearch = useCallback<WorkspaceCtx["refineSearch"]>(
     (convId, query, filters, ephemeral) => postChillaReplies(convId, respond(query, { settings, filters, ephemeral })),
     [settings, postChillaReplies],
+  );
+
+  const runAction = useCallback<WorkspaceCtx["runAction"]>(
+    (convId, action, ephemeral) => {
+      if (action.type === "meet") {
+        setMeetingTarget({ employeeId: action.employeeId });
+        return;
+      }
+      if (!ephemeral) append(convId, userText(action.query));
+      postChillaReplies(convId, respond(action.query, { settings, ephemeral, history: historyOf(convId) }));
+    },
+    [settings, postChillaReplies],
+  );
+
+  const requestIntro = useCallback<WorkspaceCtx["requestIntro"]>(
+    (viaId, targetId, topic, bridgeId) => {
+      const via = getEmployee(viaId);
+      const target = getEmployee(targetId);
+      const bridge = bridgeId ? getEmployee(bridgeId) : undefined;
+      if (!via || !target) return;
+      const me = readStored("profile", slackProfile);
+      const [v, t] = [firstName(via.name), firstName(target.name)];
+      const about = topic ? ` about ${topic}` : "";
+      const how = connectionTo(targetId).mutuals.find((m) => m.via.id === viaId)?.how;
+      const ask = bridge
+        ? `Hey ${v}! I'm trying to reach ${target.name} (${target.role})${about}. Chilla says you work with ${bridge.name}, who knows ${t}. Would you mind asking ${firstName(bridge.name)} to connect us? 🙏`
+        : `Hey ${v}! Chilla says you and ${t} ${how ?? "know each other"}. Would you mind introducing me? I'd love ${t}'s take${topic ? ` on ${topic}` : ""}. 🙏`;
+
+      const viaConv = dmId(via.id);
+      append(viaConv, userText(ask));
+      showToast(`Intro request sent to ${v}`);
+      trackEvent("intro");
+
+      typeThen(viaConv, 2000, () => {
+        append(
+          viaConv,
+          personText(via.id, bridge ? `On it! Asked ${firstName(bridge.name)} to loop you in with ${t} 🙌` : `Of course! Just introduced you two over DM 🙌`),
+        );
+        const targetConv = dmId(target.id);
+        append(targetConv, systemText(`**${bridge ? bridge.name : via.name}** introduced you to **${target.name}**${about}.`));
+        typeThen(targetConv, 2600, () => {
+          append(
+            targetConv,
+            personText(target.id, `Hi ${firstName(me.name)}! 👋 ${bridge ? firstName(bridge.name) : v} mentioned you're looking into ${topic ?? "something I might help with"}. Happy to help, what's up?`),
+          );
+          append(
+            CHILLA_DM,
+            chillaText(`🤝 **${t}** got your intro from ${bridge ? firstName(bridge.name) : v} and replied. Pick it up in your DM with ${t}.`),
+          );
+        });
+      });
+    },
+    [typeThen, showToast, trackEvent],
   );
 
   const toggleReaction = useCallback((msgId: string, emoji: string) => {
@@ -430,7 +491,9 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       );
       const person = getEmployee(m.employeeId);
       if (person) {
-        const where = m.onCalendar ? "It's on both of your calendars now." : "Add it to your calendar so you don't miss it.";
+        const where = m.onCalendar
+          ? "It's blocked on both of your calendars now, so nobody can double-book that slot."
+          : `It's blocked on ${firstName(person.name)}'s calendar. Connect yours in **Settings** and I'll block it there too.`;
         append(CHILLA_DM, chillaText(`🎉 **${firstName(person.name)}** accepted your meeting request. ${where}`));
       }
     }, 6000);
@@ -478,6 +541,8 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       typing,
       sendMessage,
       refineSearch,
+      runAction,
+      requestIntro,
       reactions,
       toggleReaction,
       profilePanelId,
@@ -502,7 +567,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     [
       profile, setProfile, settings, setSettings, meetings, integrations, onboarded, installChilla, connectCalendar,
       disconnectCalendar, completeProfile, modal, tour.status, startTour, skipTour, finishTour, events, trackEvent,
-      typing, sendMessage, refineSearch, reactions, toggleReaction, profilePanelId, meetingTarget, submitMeeting,
+      typing, sendMessage, refineSearch, runAction, requestIntro, reactions, toggleReaction, profilePanelId, meetingTarget, submitMeeting,
       nudges, incoming, nudgeTarget, createNudge, respondToNudge, sidebarOpen, toast, showToast,
     ],
   );

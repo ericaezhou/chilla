@@ -7,8 +7,8 @@ import { Mascot } from "@/components/ui/Mascot";
 
 const STEPS = [
   { n: "1", title: "Ask in plain English", body: "DM Chilla or mention @chilla in a channel: “Who should I talk to about our payments integration?”" },
-  { n: "2", title: "Get ranked people + reasons", body: "Chilla returns the 2–3 best matches and explains each pick using their actual projects and skills." },
-  { n: "3", title: "Reach out in one click", body: "Open a full profile, DM them, or request a meeting at a time you're both free on your synced calendars." },
+  { n: "2", title: "Get ranked people + reasons", body: "Chilla returns up to 3 people who actually match, explains each pick using their projects and skills, and flags any gaps. Ask follow-ups like “which of them is most technical?”" },
+  { n: "3", title: "Reach out warm, in one click", body: "See how you're connected (1st, 2nd or 3rd degree) and ask a mutual contact for an intro, or request a meeting at a time you're both free." },
   { n: "4", title: "Let Chilla follow up", body: "Set a nudge with a due date and milestone. Chilla messages them as you, follows up if they go quiet, and reports back." },
 ];
 
@@ -21,7 +21,10 @@ const SIGNALS = [
 ];
 
 const FAQ = [
-  ["Why did Chilla pick this person?", "Every recommendation lists the specific projects or expertise that matched your question, plus the words it matched on. The match % shows how strong that is compared with the other people listed."],
+  ["Why did Chilla pick this person?", "Every recommendation lists the specific projects or expertise that matched your question, plus a ✓ for each part of your question they have direct experience in. The match % is absolute: it measures how well this person covers everything you asked, not how they rank against others. If someone only has related experience, Chilla says so in a yellow note."],
+  ["What if nobody knows the answer?", "Chilla says so. If a project, team or name isn't on anyone's profile (say, “Hogwarts”), it tells you it doesn't know rather than guessing with loosely related people, and offers to search the part it does recognize."],
+  ["What do 1st, 2nd and 3rd degree mean?", "1st: you've worked with them. 2nd: a mutual contact has, and Chilla shows who and how so you can ask for a warm intro in one click. 3rd: you're two people away, and Chilla shows the chain."],
+  ["Can Chilla see my calendar, or someone else's?", "Only free/busy blocks. It never sees event titles, attendees, locations or notes, and if you ask what's on a teammate's calendar it will decline and offer to find a time instead. Meetings booked through Chilla are blocked on both calendars so the slot can't be double-booked."],
   ["Chilla understood my question wrong. What now?", "Use the words your team uses: name the project, system or decision (e.g. “retry-worker”, “EU pricing”). Chilla also understands related terms, so “billing” finds people who work on Stripe and checkout."],
   ["Does Chilla read my private messages?", "No. In the real product Chilla only uses profiles and the channels it's added to, following your workspace permissions. In this demo everything is mock data stored in your browser."],
   ["What's a nudge?", "A follow-up Chilla sends on your behalf: what you need, by when, and which milestone it unblocks. If the due date lands after the milestone, Chilla warns you. People answer with one click (done, on track, need more time, blocked), and you see it on your Home tab."],

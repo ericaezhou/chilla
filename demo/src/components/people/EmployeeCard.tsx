@@ -3,6 +3,7 @@
 import { CalendarPlus } from "lucide-react";
 import type { Employee } from "@/lib/types";
 import { Avatar } from "@/components/ui/Avatar";
+import { DegreeBadge } from "./ConnectionRow";
 import { useWorkspace } from "@/components/workspace/WorkspaceProvider";
 
 export const DEPT_COLORS: Record<string, string> = {
@@ -26,7 +27,10 @@ export function EmployeeCard({ employee: e, tourTarget }: { employee: Employee; 
       <button className="flex items-start gap-3 text-left" onClick={() => openProfile(e.id)}>
         <Avatar name={e.name} size="lg" status={settings.showAvailability ? e.availability : undefined} />
         <span className="min-w-0">
-          <span className="block font-bold hover:underline">{e.name}</span>
+          <span className="flex flex-wrap items-center gap-1.5 font-bold">
+            <span className="hover:underline">{e.name}</span>
+            <DegreeBadge employeeId={e.id} />
+          </span>
           <span className="block text-sm leading-snug">{e.role}</span>
           <span className={`pill mt-1.5 ${DEPT_COLORS[e.department]}`}>{e.department} · {e.team}</span>
         </span>

@@ -1,6 +1,6 @@
 "use client";
 
-import { Bookmark, Eye, MessageSquareText, SmilePlus } from "lucide-react";
+import { Bookmark, CalendarPlus, Eye, MessageSquareText, Search, SmilePlus } from "lucide-react";
 import { getEmployee } from "@/data/employees";
 import type { ChatMessage } from "@/lib/types";
 import { formatTime } from "@/lib/dates";
@@ -17,7 +17,7 @@ import { SetupCard } from "./SetupCard";
 const QUICK_REACTIONS = ["👍", "🎉", "👀", "✅"];
 
 export function Message({ msg, convId }: { msg: ChatMessage; convId: string }) {
-  const { profile, openProfile, reactions, toggleReaction, showToast } = useWorkspace();
+  const { profile, openProfile, reactions, toggleReaction, showToast, runAction, typing } = useWorkspace();
 
   if (msg.kind === "system") {
     return (
@@ -83,6 +83,20 @@ export function Message({ msg, convId }: { msg: ChatMessage; convId: string }) {
             <RichText text={msg.text} />
           </p>
         )}
+        {msg.kind === "text" && msg.actions && msg.actions.length > 0 && (
+          <div className="mt-2 flex flex-wrap gap-2">
+            {msg.actions.map((a) => (
+              <button
+                key={a.label}
+                className="btn btn-ghost btn-sm"
+                disabled={!!typing[convId]}
+                onClick={() => runAction(convId, a, msg.ephemeral)}
+              >
+                {a.type === "meet" ? <CalendarPlus size={14} /> : <Search size={14} />} {a.label}
+              </button>
+            ))}
+          </div>
+        )}
 
         {msg.kind === "meeting" && <MeetingNotice meetingId={msg.meetingId} />}
         {msg.kind === "nudge" && <NudgeCard nudgeId={msg.nudgeId} />}
@@ -92,7 +106,9 @@ export function Message({ msg, convId }: { msg: ChatMessage; convId: string }) {
         {msg.kind === "recommendations" && (
           <div className="mt-0.5">
             <p className="text-[0.97rem] leading-relaxed">
-              {msg.results.length > 1 ? (
+              {msg.intro ? (
+                <RichText text={msg.intro} />
+              ) : msg.results.length > 1 ? (
                 <>
                   Here are the <b>{msg.results.length} people</b> who know the most about{" "}
                   <span className="font-semibold">{msg.topic}</span>, ranked by how closely their work matches:
@@ -103,12 +119,28 @@ export function Message({ msg, convId }: { msg: ChatMessage; convId: string }) {
                 </>
               )}
             </p>
+            {msg.notes && msg.notes.length > 0 && (
+              <ul className="mt-2 max-w-2xl space-y-1.5 text-[0.95rem]">
+                {msg.notes.map((n) => (
+                  <li key={n} className="relative pl-4 before:absolute before:top-[0.65em] before:left-0 before:h-1.5 before:w-1.5 before:rounded-full before:bg-nose">
+                    <RichText text={n} />
+                  </li>
+                ))}
+              </ul>
+            )}
             <div className="mt-4 grid max-w-2xl grid-cols-[minmax(0,1fr)] gap-4">
               {msg.results.map((r, i) => (
-                <RecommendationCard key={r.employeeId} rec={r} rank={i + 1} query={msg.query} topic={msg.topic} />
+                <RecommendationCard
+                  key={r.employeeId}
+                  rec={r}
+                  rank={i + 1}
+                  query={msg.query}
+                  topic={msg.topic}
+                  ranked={!msg.noRefine}
+                />
               ))}
             </div>
-            <RefineBar msg={msg} convId={convId} />
+            {!msg.noRefine && <RefineBar msg={msg} convId={convId} />}
           </div>
         )}
 

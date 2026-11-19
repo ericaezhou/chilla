@@ -120,7 +120,7 @@ export const employees: Employee[] = [
         period: "2026",
         role: "PM",
         summary: "Reduced time from signup to first payment from 6 days to 2.",
-        tags: ["onboarding", "activation", "signup", "growth", "funnel"],
+        tags: ["onboarding", "activation", "signup", "growth", "funnel", "analytics"],
       },
       {
         name: "Experimentation platform rollout",
